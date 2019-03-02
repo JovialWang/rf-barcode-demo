@@ -133,7 +133,6 @@ function gumSuccess(stream){
   video.muted = true;
   videoEle.onloadedmetadata = function(e) {
     console.log("video load")
-    initDecoder();
   };
 }
 
@@ -145,7 +144,7 @@ function initDecoder(){
       if(resultFunction){
         resultFunction(result);
       }
-      setTimeout(initCamera,200);
+      initCamera();
     })
     .catch(err => alert(err));
 }
@@ -162,6 +161,7 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
       )
     bufferLoader.load();
   }
+  initDecoder();
   var width = $$("#video-container")[0].clientWidth;
   $$("#video")[0].style.zoom = (width)/$$("#video")[0].videoWidth;
   resultFunction = function(result) {
