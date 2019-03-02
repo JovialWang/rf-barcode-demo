@@ -133,7 +133,6 @@ function gumSuccess(stream){
   video.muted = true;
   videoEle.onloadedmetadata = function(e) {
     console.log("video load");
-    videoEle.play();
   };
 }
 
@@ -162,7 +161,7 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
       )
     bufferLoader.load();
   }
-  initDecoder();
+  videoEle.play();
   var width = $$("#video-container")[0].clientWidth;
   $$("#video")[0].style.zoom = (width)/$$("#video")[0].videoWidth;
   resultFunction = function(result) {
@@ -170,10 +169,12 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
     app.popup.close($$('.popup-camera'), true);
     $$('#bar-code')[0].value = result;
   }
+  initDecoder();
 });
 
 $$('.popup-camera').on('popup:close', function (e, popup) {
   //  codeReader.reset();
+    videoEle.pause();
    console.log('Reset.')
    resultFunction = null;
 });
