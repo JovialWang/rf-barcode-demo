@@ -144,7 +144,7 @@ function initDecoder(){
       if(resultFunction){
         resultFunction(result);
       }
-      setTimeout(initCamera,500);
+      setTimeout(initCamera,200);
     })
     .catch(err => alert(err));
 }
@@ -169,6 +169,7 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
     $$('#bar-code')[0].value = result;
   }
   videoEle.play();
+  initDecoder();
 });
 
 $$('.popup-camera').on('popup:close', function (e, popup) {
