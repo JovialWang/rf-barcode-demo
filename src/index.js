@@ -147,7 +147,7 @@ function initDecoder(){
       }
       initCamera();
     })
-    .catch(err => console.error(err));
+    .catch(err => alert(err));
 }
 
 $$('.popup-camera').on('popup:open', function (e, popup) {
