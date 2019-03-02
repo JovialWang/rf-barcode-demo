@@ -47,7 +47,7 @@ var lastValue;
 
 var videoEle = $$("#video")[0];
 
-const codeReader = new BrowserBarcodeReader();
+//var codeReader = new BrowserBarcodeReader();
 
 
 var mainView = app.views.create('.view-main',{
@@ -129,13 +129,16 @@ function initCamera(){
 function gumSuccess(stream){
   console.log("video init")
   videoEle.srcObject = stream;
+        videoEle.setAttribute('autoplay', 'true');
+        videoEle.setAttribute('muted', 'true');
+        videoEle.setAttribute('playsinline', 'true');
+        videoEle.setAttribute('autofocus', 'true');
 }
 
 function initDecoder(){
   console.log("start")
-  codeReader = new BrowserBarcodeReader();
   codeReader
-    .decodeFromVideoStream(videoEle.srcObject, videoEle)
+    .decodeFromVideoStream(videoEle.srcObject)
     .then(result => {
       console.log(result);
       if(resultFunction){
