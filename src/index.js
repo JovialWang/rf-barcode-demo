@@ -141,7 +141,6 @@ function initCamera(){
     constraints = { 
       width: 600,
       height: 400,
-      frameRate: 30,
       deviceId:{
         exact:smartSelect.getValue()
       } 
