@@ -47,7 +47,7 @@ var lastValue;
 
 var videoEle = $$("#video")[0];
 
-//var codeReader = new BrowserBarcodeReader();
+var codeReader = new BrowserBarcodeReader();
 
 
 var mainView = app.views.create('.view-main',{
