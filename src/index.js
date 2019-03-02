@@ -12,9 +12,6 @@ import Popup from 'framework7/components/popup/popup.js';
 
 
 BrowserBarcodeReader.prototype.decodeFromVideoStream = function(stream){
-  this.reset();
-
-  this.prepareVideoElement();
 
   return new Promise((resolve, reject) => {
 
