@@ -130,6 +130,7 @@ function initCamera(){
 
 function gumSuccess(stream){
   videoEle.srcObject = stream;
+  video.muted = true;
   videoEle.onloadedmetadata = function(e) {
     console.log("video load")
     videoEle.play();
