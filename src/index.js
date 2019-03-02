@@ -124,8 +124,8 @@ var resultFunction = function(result) {
 
 function initCamera(){
   var constraints = { 
-    width: {min: 640},
-    height: {min: 480},
+    width: {min: 600},
+    height: {min: 400},
     frameRate: 30,
     advanced: [
       {width: 650},
