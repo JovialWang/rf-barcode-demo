@@ -24,6 +24,19 @@ BrowserBarcodeReader.prototype.decodeFromVideoStream = function(stream, videoEle
     });
 }
 
+BrowserBarcodeReader.prototype.decodeFromVideoStreamOnce = function(){
+    var _this = this;
+    return new Promise(function (resolve, reject) {
+        _this.decodeOnceWithDelay(resolve, reject);
+    });
+}
+
+BrowserBarcodeReader.prototype.decodeFromVideoStreamPause = function(){
+  if(undefined !== this.timeoutHandler) {
+    clearTimeout(this.timeoutHandler);
+    this.timeoutHandler = undefined;
+  }
+}
 
 var soundUrl = './9360.mp3';
 
@@ -103,7 +116,11 @@ var mainView = app.views.create('.view-main',{
   }
 });
 
-var resultFunction;
+var resultFunction = function(result) {
+    play();
+    app.popup.close($$('.popup-camera'), true);
+    $$('#bar-code')[0].value = result;
+  }
 
 function initCamera(){
   var constraints = { 
@@ -138,7 +155,7 @@ function gumSuccess(stream){
 function initDecoder(){
   console.log("start")
   codeReader
-    .decodeFromVideoStream(videoEle.srcObject)
+    .decodeFromVideoStream(videoEle.srcObject, videoEle)
     .then(result => {
       console.log(result);
       if(resultFunction){
@@ -149,6 +166,25 @@ function initDecoder(){
       alert(err);
       console.error(err);
     });
+}
+
+function startDecoder(){
+   codeReader
+    .decodeFromVideoStreamOnce()
+    .then(result => {
+      console.log(result);
+      if(resultFunction){
+        resultFunction(result);
+      }
+    })
+    .catch(err => {
+      alert(err);
+      console.error(err);
+    });   
+}
+
+function pauseDecoder(){
+  codeReader.decodeFromVideoStreamPause();
 }
 
 $$('.popup-camera').on('popup:open', function (e, popup) {
@@ -164,20 +200,16 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
     bufferLoader.load();
     var width = $$("#video-container")[0].clientWidth;
     $$("#video")[0].style.zoom = (width)/$$("#video")[0].videoWidth;
+    initDecoder();
+  }else{
+    startDecoder();
   }
-  resultFunction = function(result) {
-    play();
-    app.popup.close($$('.popup-camera'), true);
-    $$('#bar-code')[0].value = result;
-  }
-  initDecoder();
 });
 
 $$('.popup-camera').on('popup:close', function (e, popup) {
-   codeReader.reset();
+   pauseDecoder();
    //initCamera();
    console.log('Reset.')
-   resultFunction = null;
 });
 
 
