@@ -88,6 +88,9 @@ var mainView = app.views.create('.view-main',{
                   if(lastValue!=smartSelect.getValue()){
                     lastValue = smartSelect.getValue();
                     codeReader.reset();
+                    videoEle.remove();
+                    videoEle = document.createElement('video');
+                    $$("#video-container").append(videoEle);
                     initCamera();
                     decodeInit = false;
                   }
