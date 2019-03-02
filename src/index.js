@@ -59,6 +59,7 @@ var mainView = app.views.create('.view-main',{
           .then((videoInputDevices) => {
             var num = 0;
             videoInputDevices.forEach((element) => {
+              console.log(element);
               if(num===0){
                 $$("#camera-list").append(selectedTemplate({
                   deviceId: element.deviceId,
@@ -107,12 +108,18 @@ var resultFunction;
 
 function initCamera(){
   var constraints = { 
-    width: 600, 
-    height: 400, 
+    width: {min: 640},
+    height: {min: 480},
+    advanced: [
+      {width: 650},
+      {width: {min: 650}},
+      {width: {max: 800}},
+    ],
     deviceId:{
       exact:smartSelect.getValue()
     } 
   };
+
   if (navigator.mediaDevices) {
       navigator.mediaDevices.getUserMedia({ video: constraints}).then(gumSuccess).catch((e)=>alert(e));
   } else if (navigator.getUserMedia) {
