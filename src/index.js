@@ -132,7 +132,8 @@ function gumSuccess(stream){
   videoEle.srcObject = stream;
   video.muted = true;
   videoEle.onloadedmetadata = function(e) {
-    console.log("video load")
+    console.log("video load");
+    videoEle.play();
   };
 }
 
@@ -169,14 +170,12 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
     app.popup.close($$('.popup-camera'), true);
     $$('#bar-code')[0].value = result;
   }
-  videoEle.play();
 });
 
 $$('.popup-camera').on('popup:close', function (e, popup) {
   //  codeReader.reset();
    console.log('Reset.')
    resultFunction = null;
-   videoEle.pause();
 });
 
 
