@@ -175,7 +175,7 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
 
 $$('.popup-camera').on('popup:close', function (e, popup) {
    codeReader.reset();
-   initCamera();
+   //initCamera();
    console.log('Reset.')
    resultFunction = null;
 });
