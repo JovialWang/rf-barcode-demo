@@ -124,11 +124,12 @@ var resultFunction = function(result) {
 
 function initCamera(){
   var constraints = { 
-    width: {min: 600},
-    height: {min: 400},
+    width: {min: 640},
+    height: {min: 480},
+    frameRate: 30,
     advanced: [
       {width: 650},
-      {width: {min: 600}},
+      {width: {min: 650}},
       {width: {max: 800}},
     ],
     deviceId:{
@@ -137,8 +138,17 @@ function initCamera(){
   };
 
   navigator.mediaDevices.getUserMedia({ video: constraints}).then(gumSuccess).catch((e)=>{
-    alert(e);
-    console.log(e);
+    constraints = { 
+      width: 600,
+      height: 400,
+      frameRate: 30,
+      deviceId:{
+        exact:smartSelect.getValue()
+      } 
+    };
+    navigator.mediaDevices.getUserMedia({ video: constraints}).then(gumSuccess).catch((e)=>{
+      alert(e);
+    });
   });
 }
 
