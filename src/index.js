@@ -222,10 +222,10 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
           }
       )
     bufferLoader.load();
-    var width = $$("#video-container")[0].clientWidth;
-    $$("#video")[0].style.zoom = (width)/$$("#video")[0].videoWidth;
   }
   if(decodeInit){
+    var width = $$("#video-container")[0].clientWidth;
+    $$("#video")[0].style.zoom = (width)/$$("#video")[0].videoWidth;
     startDecoder();
   }else{
     decodeInit = true;
