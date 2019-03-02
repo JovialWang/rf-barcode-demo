@@ -133,6 +133,7 @@ function gumSuccess(stream){
 
 function initDecoder(){
   console.log("start")
+  codeReader = new BrowserBarcodeReader();
   codeReader
     .decodeFromVideoStream(videoEle.srcObject, videoEle)
     .then(result => {
