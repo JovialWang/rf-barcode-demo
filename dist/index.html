@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar -->
+    <meta name="theme-color" content="#2196f3">
+    <!-- Your app title -->
+    <title>手机捡货</title>
+  </head>
+  <body>
+    <!-- App root element -->
+    <div id="app">
+      <!-- Statusbar overlay -->
+      <div class="statusbar"></div>
+
+      <!-- Your main view, should have "view-main" class -->
+      <div class="view view-main">
+        <!-- Initial Page, "data-name" contains page name -->
+        <div data-name="home" class="page">
+
+          <!-- Top Navbar -->
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="title">手机捡货-Demo</div>
+            </div>
+          </div>
+
+          <!-- Scrollable page content -->
+          <div class="page-content">
+            <div class="block-title">设置</div>
+            <div class="list">
+              <ul>
+                <li>
+                  <!-- Additional "smart-select" class -->
+                  <a href="#" class="item-link smart-select">
+                    <!-- select -->
+                    <select name="camera-list" id="camera-list">
+                    </select>
+                    <div class="item-content">
+                      <div class="item-inner">
+                        <!-- Select label -->
+                        <div class="item-title">摄像头</div>
+                        <!-- Selected value, not required -->
+                        <div class="item-after"></div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="block-title">商品条码</div>
+            <div class="list no-hairlines-md">
+              <ul>
+                <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input-wrap">
+                      <input type="text" placeholder="输入" id="bar-code">
+                      <span class="input-clear-button"></span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="block">
+              <div class="row">
+                <button class="col button button-outline popup-open" data-popup=".popup-camera">扫码</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popup popup-camera">
+        <!-- another view -->
+        <div class="view view-camera" data-name="camera">
+          <div data-name="camera-page" class="page">
+            <div class="page-content">
+              <div class="block">
+                <!-- Close Popup -->
+                <p><a class="link popup-close" href="#">Close popup</a></p>
+                <p>扫描条码...</p>
+                <div id="video-container">
+                    <video id="video"></video>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Path to Framework7 Library Bundle JS-->
+    <script type="text/javascript" src="./index.bundle.js"></script>
+
+  </body>
+</html>
