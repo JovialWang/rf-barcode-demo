@@ -11,15 +11,17 @@ import Sheet from 'framework7/components/sheet/sheet.js';
 import Popup from 'framework7/components/popup/popup.js';
 
 
-BrowserBarcodeReader.prototype.decodeFromVideoStream = function(stream){
+BrowserBarcodeReader.prototype.decodeFromVideoStream = function(stream, videoElement){
+    var _this = this;
+    this.reset();
+    this.prepareVideoElement(videoElement);
 
-  return new Promise((resolve, reject) => {
-
-      const callback = () => {
-          this.decodeOnceWithDelay(resolve, reject);
-      };
-      this.startDecodeFromStream(stream, callback);
-  });
+    return new Promise(function (resolve, reject) {
+        var callback = function () {
+            _this.decodeOnceWithDelay(resolve, reject);
+        };
+        return _this.startDecodeFromStream(stream, callback);
+    });
 }
 
 
@@ -118,24 +120,21 @@ function initCamera(){
     } 
   };
 
-  if (navigator.mediaDevices) {
-      navigator.mediaDevices.getUserMedia({ video: constraints}).then(gumSuccess).catch((e)=>alert(e));
-  } else if (navigator.getUserMedia) {
-    navigator.getUserMedia({ video: constraints}, gumSuccess, (e)=>alert(e));
-  }
+  navigator.mediaDevices.getUserMedia({ video: constraints}).then(gumSuccess).catch((e)=>{
+    alert(e);
+    console.log(e);
+  });
 }
 
 function gumSuccess(stream){
+  console.log("video init")
   videoEle.srcObject = stream;
-  video.muted = true;
-  videoEle.onloadedmetadata = function(e) {
-    console.log("video load")
-  };
 }
 
 function initDecoder(){
+  console.log(videoEle)
   codeReader
-    .decodeFromVideoStream(videoEle.srcObject)
+    .decodeFromVideoStream(videoEle.srcObject, videoEle)
     .then(result => {
       console.log(result);
       if(resultFunction){
@@ -143,7 +142,10 @@ function initDecoder(){
       }
       setTimeout(initCamera,200);
     })
-    .catch(err => alert(err));
+    .catch(err => {
+      alert(err);
+      console.error(err);
+    });
 }
 
 $$('.popup-camera').on('popup:open', function (e, popup) {
@@ -165,15 +167,14 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
     app.popup.close($$('.popup-camera'), true);
     $$('#bar-code')[0].value = result;
   }
-  videoEle.play();
   initDecoder();
 });
 
 $$('.popup-camera').on('popup:close', function (e, popup) {
-  //  codeReader.reset();
+   codeReader.reset();
+   initCamera();
    console.log('Reset.')
    resultFunction = null;
-   videoEle.pause();
 });
 
 
