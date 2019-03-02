@@ -145,7 +145,7 @@ function initDecoder(){
       if(resultFunction){
         resultFunction(result);
       }
-      initCamera();
+      setTimeout(initCamera,200);
     })
     .catch(err => alert(err));
 }
