@@ -90,6 +90,7 @@ var mainView = app.views.create('.view-main',{
                     codeReader.reset();
                     videoEle.remove();
                     videoEle = document.createElement('video');
+                    videoEle.id = "video";
                     $$("#video-container").append(videoEle);
                     initCamera();
                     decodeInit = false;
