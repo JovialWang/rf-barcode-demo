@@ -53,7 +53,7 @@ var app = new Framework7({
   id: 'wdk.open.rf',
 });
 
-var selectedTemplate = Template7.compile("<option value=\"{{deviceId}}\" selected>{{deviceName}}</option>");
+//var selectedTemplate = Template7.compile("<option value=\"{{deviceId}}\" selected>{{deviceName}}</option>");
 var listTemplate = Template7.compile("<option value=\"{{deviceId}}\">{{deviceName}}</option>");
 var smartSelect;
 var lastValue;
@@ -62,6 +62,8 @@ var videoEle = $$("#video")[0];
 
 var codeReader = new BrowserBarcodeReader();
 
+var decodeInit = false;
+
 
 var mainView = app.views.create('.view-main',{
   on: {
@@ -69,20 +71,11 @@ var mainView = app.views.create('.view-main',{
       if(e.name==="home"){
         codeReader.getVideoInputDevices()
           .then((videoInputDevices) => {
-            var num = 0;
             videoInputDevices.forEach((element) => {
-              console.log(JSON.stringify(element));
-              if(num===0){
-                $$("#camera-list").append(selectedTemplate({
+              $$("#camera-list").append(listTemplate({
                   deviceId: element.deviceId,
                   deviceName: element.label
-                }));
-              }else{
-                $$("#camera-list").append(listTemplate({
-                  deviceId: element.deviceId,
-                  deviceName: element.label
-                }));
-              }
+              }));
             });
             smartSelect = app.smartSelect.create({
               el:$$(".smart-select"),
@@ -94,7 +87,9 @@ var mainView = app.views.create('.view-main',{
                 close: function() {
                   if(lastValue!=smartSelect.getValue()){
                     lastValue = smartSelect.getValue();
+                    codeReader.reset();
                     initCamera();
+                    decodeInit = false;
                   }
                 }
               }
@@ -123,28 +118,50 @@ var resultFunction = function(result) {
   }
 
 function initCamera(){
-  var constraints = { 
-    width: {min: 640},
-    height: {min: 480},
-    frameRate: 30,
-    advanced: [
-      {width: 650},
-      {width: {min: 650}},
-      {width: {max: 800}},
-    ],
-    deviceId:{
-      exact:smartSelect.getValue()
-    } 
-  };
-
-  navigator.mediaDevices.getUserMedia({ video: constraints}).then(gumSuccess).catch((e)=>{
+  var constraints;
+  if(smartSelect.getValue()=="default"){
     constraints = { 
-      width: 600,
-      height: 400,
+      width: {min: 640},
+      height: {min: 480},
+      frameRate: 30,
+      advanced: [
+        {width: 650},
+        {width: {min: 650}},
+        {width: {max: 800}},
+      ],
+      facingMode:"environment"
+    };
+  }else{
+    constraints = { 
+      width: {min: 640},
+      height: {min: 480},
+      frameRate: 30,
+      advanced: [
+        {width: 650},
+        {width: {min: 650}},
+        {width: {max: 800}},
+      ],
       deviceId:{
         exact:smartSelect.getValue()
-      } 
+      }
     };
+  }
+  navigator.mediaDevices.getUserMedia({ video: constraints}).then(gumSuccess).catch((e)=>{
+    if(smartSelect.getValue()=="default"){
+      constraints = { 
+        width: 600,
+        height: 400,
+        facingMode:"environment"
+      };
+    }else{
+      constraints = { 
+        width: 600,
+        height: 400,
+        deviceId:{
+          exact:smartSelect.getValue()
+        } 
+      };
+    }
     navigator.mediaDevices.getUserMedia({ video: constraints}).then(gumSuccess).catch((e)=>{
       alert(e);
     });
@@ -154,10 +171,6 @@ function initCamera(){
 function gumSuccess(stream){
   console.log("video init")
   videoEle.srcObject = stream;
-        videoEle.setAttribute('autoplay', 'true');
-        videoEle.setAttribute('muted', 'true');
-        videoEle.setAttribute('playsinline', 'true');
-        videoEle.setAttribute('autofocus', 'true');
 }
 
 function initDecoder(){
@@ -208,9 +221,12 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
     bufferLoader.load();
     var width = $$("#video-container")[0].clientWidth;
     $$("#video")[0].style.zoom = (width)/$$("#video")[0].videoWidth;
-    initDecoder();
-  }else{
+  }
+  if(decodeInit){
     startDecoder();
+  }else{
+    decodeInit = true;
+    initDecoder();
   }
 });
 
