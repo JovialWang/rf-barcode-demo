@@ -126,10 +126,9 @@ function initCamera(){
   var constraints = { 
     width: {min: 600},
     height: {min: 400},
-    frameRate: 30,
     advanced: [
       {width: 650},
-      {width: {min: 650}},
+      {width: {min: 600}},
       {width: {max: 800}},
     ],
     deviceId:{
