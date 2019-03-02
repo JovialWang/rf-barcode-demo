@@ -132,7 +132,7 @@ function gumSuccess(stream){
 }
 
 function initDecoder(){
-  console.log(videoEle)
+  console.log("start")
   codeReader
     .decodeFromVideoStream(videoEle.srcObject, videoEle)
     .then(result => {
@@ -140,7 +140,6 @@ function initDecoder(){
       if(resultFunction){
         resultFunction(result);
       }
-      setTimeout(initCamera,200);
     })
     .catch(err => {
       alert(err);
@@ -159,9 +158,9 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
           }
       )
     bufferLoader.load();
+    var width = $$("#video-container")[0].clientWidth;
+    $$("#video")[0].style.zoom = (width)/$$("#video")[0].videoWidth;
   }
-  var width = $$("#video-container")[0].clientWidth;
-  $$("#video")[0].style.zoom = (width)/$$("#video")[0].videoWidth;
   resultFunction = function(result) {
     play();
     app.popup.close($$('.popup-camera'), true);
@@ -171,7 +170,6 @@ $$('.popup-camera').on('popup:open', function (e, popup) {
 });
 
 $$('.popup-camera').on('popup:close', function (e, popup) {
-   codeReader.reset();
    initCamera();
    console.log('Reset.')
    resultFunction = null;
