@@ -59,7 +59,7 @@ var mainView = app.views.create('.view-main',{
           .then((videoInputDevices) => {
             var num = 0;
             videoInputDevices.forEach((element) => {
-              console.log(element);
+              console.log(JSON.stringify(element));
               if(num===0){
                 $$("#camera-list").append(selectedTemplate({
                   deviceId: element.deviceId,
@@ -130,6 +130,7 @@ function initCamera(){
 function gumSuccess(stream){
   videoEle.srcObject = stream;
   videoEle.onloadedmetadata = function(e) {
+    console.log("video load")
     videoEle.play();
     initDecoder();
   };
